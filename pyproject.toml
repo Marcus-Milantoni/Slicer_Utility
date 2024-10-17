@@ -23,11 +23,8 @@ homepage = "https://github.com/Marcus-Milantoni/Slicer_Utility"
 repository = "https://github.com/Marcus-Milantoni/Slicer_Utility"
 
 [project.dependencies]
-dependencies = [
-    "numpy>=1.21.0",
-    "matplotlib>=3.4.0",
-    "slicer; extra == 'slicer'"
-]
+numpy = ">=1.21.0"
+matplotlib = ">=3.4.0"
 
 [tool.setuptools.packages.find]
 where = ["src"]
