@@ -1,10 +1,10 @@
 import slicer
 import numpy as np
 from segmentation_node import SegmentationNode
-from utils import log_and_raise, check_type
+from utils import log_and_raise, check_type, TempNodeManager
 import logging
 import os
-from utils import TempNodeManager
+
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -99,6 +99,10 @@ class Segment:
         self.hasArray = False
         self.associatedVolume = None
         
+
+    def __str__(self):
+        return self.description()
+
 
     def description(self) -> str:
         """

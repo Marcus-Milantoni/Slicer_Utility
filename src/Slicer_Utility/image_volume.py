@@ -73,6 +73,10 @@ class ImageVolume:
         self.getName = self.volumeNode.GetName()
 
 
+    def __str__(self):
+        return self.description()
+
+
     def description(self) -> str:
         """
         Get the description of the volume node.

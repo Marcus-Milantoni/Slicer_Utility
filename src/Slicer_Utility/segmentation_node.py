@@ -2,7 +2,7 @@ import slicer, vtk
 import numpy as np
 import os
 import logging
-from segment import Segment
+from Segment import Segment
 from utils import check_type, log_and_raise, TempNodeManager
 
 
@@ -81,6 +81,10 @@ class SegmentationNode:
         for i in range(self._segmentation.GetNumberOfSegments()):
             segmentObject = self._segmentation.GetNthSegment(i)
             self.segments.append(Segment(self, segmentObject))
+
+
+    def __str__(self):
+        return self.description()
 
 
     def description(self) -> str:

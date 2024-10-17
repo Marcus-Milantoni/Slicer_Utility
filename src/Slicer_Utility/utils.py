@@ -65,11 +65,35 @@ class volumeNodeTypes(Enum):
 ####################################################################################################
 
 def check_type(variable, expected_type, variable_name: str):
+    """
+    Check if a variable is of the expected type.
+
+    Parameters
+    ----------
+    variable : any
+                The variable to check the type of.
+    expected_type : type
+                The expected type of the variable.
+    variable_name : str
+                The name of the variable.
+    """
     if not isinstance(variable, expected_type):
         raise TypeError(f"The {variable_name} parameter must be a {expected_type.__name__}.")
 
 
 def log_and_raise(logger, error_message, exception_type=Exception):
+    """"
+    Log an error message and raise an exception.
+    
+    Parameters
+    ----------
+    logger : logging.Logger
+                The logger to log the error message.    
+    error_message : str
+                The error message to log and raise.
+    exception_type : Exception, default: Exception
+                The type of exception to raise.
+    """
     logger.exception(error_message)
     raise exception_type(error_message)
 
