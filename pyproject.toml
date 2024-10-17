@@ -3,8 +3,8 @@ requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "Slicer_Utility"
-version = "0.1.0"
+name = "sicerutility"
+version = "0.1.1"
 description = "A utility package for implementing functions in 3D Slicer"
 authors = [
     { name = "Marcus Milantoni", email = "mmilanto@uwo.ca" }
@@ -27,4 +27,4 @@ homepage = "https://github.com/Marcus-Milantoni/Slicer_Utility"
 repository = "https://github.com/Marcus-Milantoni/Slicer_Utility"
 
 [tool.setuptools.packages.find]
-where = ["Slicer_Utility"]
+where = ["Slicer_Utils"]
