@@ -253,7 +253,7 @@ class Segment:
             log_and_raise(logger, "An error occurred in updateSlicer", type(e))
 
 
-    def copy(self, newName: str) -> Segment:
+    def copy(self, newName: str):
         """
         Copy the segment.
         

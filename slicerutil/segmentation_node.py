@@ -2,7 +2,7 @@ import slicer, vtk
 import numpy as np
 import os
 import logging
-from Segment import Segment
+from segment import Segment
 from utils import check_type, log_and_raise, TempNodeManager
 
 
