@@ -2,7 +2,7 @@
 A package containing usefull functions for working with common nodes in 3D Slicer as NumPyArrays. 
 
 ## Table of Contents
-- [Usage](#Usage)
+- [Installation](#Installation)
 - [License](#License)
 - [Requirements](#Requirements)
 - [Setup](#Setup)
@@ -10,17 +10,34 @@ A package containing usefull functions for working with common nodes in 3D Slice
 - [Example patients](#Examples)
 - [Acknowledgements](#Acknowledgements)
 
-## Usage
-!!!!Please install this package in a Slicer python environment!!!!
+## Installation
+**!!!! Please install this package in a Slicer python environment through 3D Slicer's python terminal !!!!**
 
-_After installing the package use the following to import_ <br>
+### Install dependencies:
+* Python >= 3
+* [NumPy](https://numpy.org/doc/stable/index.html)
+* [Matplotlib](https://matplotlib.org)
 
-**import slicerutil as su**
+### Install slicerutil
+``` python
+import pip
 
-<br>
+pip.main(['install', 'slicerutil'])
+```
+
+### Import the package
+After installing the package use the following to import:
+``` python
+import slicerutil as su
+```
+
+or if you want to use the package in function mode (without oop):
+``` python
+import slicerutil.basic_functions as bf
+```
 
 ## License
-The following repository is under MIT license.
+The following repository is under MIT license. For more information, visit [LICENSE](/LICENSE).
 
 ## Setup
 
@@ -34,8 +51,9 @@ Please follow the steps provided bellow:
     - The Slicer application needs to restart to install the extensions.
 
 ### Set up the SlicerJupyter
-
 1. Using the search widget in Slicer, open the SlicerJupyter extension by searching for JupyterKernel.
+
+    ![The Slicer application on the SlicerJupyter Modules!](/images/SlicerJupyterScreenCapture.png)
 2. Click the "Start Jupyter Server" button. A JupyterLab notebook will open when the setup is complete.
 3. Click the "Jupyter server in external Python environment" and copy the command to clipboard.
 4. Open the anaconda prompt (Terminal if on mac) and paste the command.
