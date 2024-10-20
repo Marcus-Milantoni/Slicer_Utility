@@ -9,6 +9,10 @@ setup(
     version="0.1.4",
     description="A package created for ease of use working with NumPy in 3D Slicer",
     packages = find_packages(),
+    include_package_data=True,  # This ensures that package_data is included
+    package_data={
+        'slicerutil': ['assets/*.png', 'assets/*.jpg'],  # Include image files
+    },
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/Marcus-Milantoni/Slicer_Utility",

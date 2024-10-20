@@ -1,4 +1,4 @@
-![Banner!](/images/banner.jpeg)
+![Banner!](/slicerutil/assets/banner.jpeg)
 
 # slicerutil
 A package containing usefull functions for working with common nodes in 3D Slicer as NumPyArrays. 
@@ -55,7 +55,7 @@ Please follow the steps provided bellow:
 ### Set up the SlicerJupyter
 1. Using the search widget in Slicer, open the SlicerJupyter extension by searching for JupyterKernel.
 
-    ![The Slicer application on the SlicerJupyter Modules!](/images/SlicerJupyterScreenCapture.png)
+    ![The Slicer application on the SlicerJupyter Modules!](/slicerutil/assets/SlicerJupyterScreenCapture.png)
 2. Click the "Start Jupyter Server" button. A JupyterLab notebook will open when the setup is complete.
 3. Click the "Jupyter server in external Python environment" and copy the command to clipboard.
 4. Open the anaconda prompt (Terminal if on mac) and paste the command.
