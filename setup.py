@@ -6,12 +6,12 @@ with open(r"README.md", "r") as fh:
 
 setup(
     name="slicerutil",
-    version="0.1.4",
+    version="0.2.2",
     description="A package created for ease of use working with NumPy in 3D Slicer",
     packages = find_packages(),
     include_package_data=True,  # This ensures that package_data is included
     package_data={
-        'slicerutil': ['assets/*.png', 'assets/*.jpg'],  # Include image files
+        'slicerutil': ['assets/*.png', 'assets/*.jpeg'],  # Include image files
     },
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -31,3 +31,4 @@ setup(
     install_requires=["numpy", "matplotlib"], 
     keywords=["3D slicer", "Utility", "Image Processing", "NumPy"]
 )
+

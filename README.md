@@ -1,4 +1,4 @@
-![Banner!](/slicerutil/assets/banner.jpeg)
+![Banner!](/slicerutil/assets/Banner.png)
 
 # slicerutil
 A package containing usefull functions for working with common nodes in 3D Slicer as NumPyArrays. 

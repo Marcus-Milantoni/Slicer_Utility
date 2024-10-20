@@ -1,6 +1,6 @@
 # __init__.py
 
-__version__ = "0.1.4"
+__version__ = "0.2.2"
 __author__="Marcus Milantoni"
 __license__="MIT"
 __description__="A package created for ease of use working with NumPy in 3D Slicer",

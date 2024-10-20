@@ -1,9 +1,8 @@
 import slicer
 import numpy as np
-from .segmentation_node import SegmentationNode
-from .utils import log_and_raise, check_type, TempNodeManager
+from .utils import log_and_raise, check_type
 import logging
-import os
+
 
 logger = logging.getLogger(__name__)
 
@@ -13,7 +12,7 @@ class Segment:
     
     Attributes
     ----------
-    segmentObject : slicer.vtkMRMLSegment
+    segmentObject :
         The segment object in Slicer.
     segmentationNode : slicer.vtkMRMLSegmentationNode
         The associated segmentation node in Slicer.
@@ -60,7 +59,7 @@ class Segment:
         Calculate the Dice similarity coefficient between the segment and a segmentation array.
     margin_editor_effect(volumeNode: slicer.vtkMRMLScalarVolumeNode, operation: str = 'Grow', MarginSize: float = 10.0) -> None
         Apply the margin effect to the segment in Slicer.
-    logical_operator_slicer(secondarySegment: slicer.vtkMRMLSegment, volumeNode: slicer.vtkMRMLScalarVolumeNode, operator='copy') -> None
+    logical_operator_slicer(secondarySegment: , volumeNode: slicer.vtkMRMLScalarVolumeNode, operator='copy') -> None
         Apply logical operations to two segmentations in Slicer.
     segmentation_by_auto_threshold(volumeNode: slicer.vtkMRMLScalarVolumeNode, threshold='OTSU') -> None
         Apply the autosegmentation threshold to a new segmentation in Slicer.
@@ -322,13 +321,13 @@ class Segment:
             log_and_raise(logger, "An error occurred in marginEditorEffect", type(e))
 
     
-    def logical_operator_slicer(self, secondarySegment: slicer.vtkMRMLSegment, volumeNode: slicer.vtkMRMLScalarVolumeNode, operator='copy') -> None:
+    def logical_operator_slicer(self, secondarySegment, volumeNode: slicer.vtkMRMLScalarVolumeNode, operator='copy') -> None:
         """
         Function to apply logical operations to two segmentations in slicer. The main segmentation is the segmentation that will be modified. The operator will select the type of transformation applied.
         
         Parameters
         ----------
-        secondarySegment : slicer.vtkMRMLSegment
+        secondarySegment :
             The name of the segmentation to be used as a reference.
         operator : str, optional
             The operation to be applied. Default is 'copy'. Options are 'copy', 'union', 'intersect', 'subtract', 'invert', 'clear', 'fill'.
@@ -340,7 +339,6 @@ class Segment:
         None
         """
         try:
-            check_type(secondarySegment, slicer.vtkMRMLSegment, 'secondarySegment')
             check_type(operator, str, 'operator')
             # Get the segmentation editor widget
             segmentEditorWidget = slicer.qMRMLSegmentEditorWidget()
@@ -684,52 +682,4 @@ class Segment:
             del removed_array
         except Exception as e:
             log_and_raise(logger, "An error occurred in removeMaskPosteriorToSlice", type(e))
-
-    
-    def save_segment_to_files(self, SaveDirectory: str, referenceVolumeNode=None, FileType: str='nii', ExtraSaveInfo=None) -> None:
-        """
-        Save the segment to a file in the specified directory.
-
-        Parameters
-        ----------
-        SaveDirectory : str
-            The directory to save the segment to.
-        referenceVolumeNode : slicer.vtkMRMLScalarVolumeNode, optional
-            The volume node to use as a reference. Default is None.
-        FileType : str, optional
-        ExtraSaveInfo : str, optional
-            Extra information to add to the file name. Default is None.
-        """
-        check_type(SaveDirectory, str, 'SaveDir')
-        check_type(FileType, str, 'FileType')
-        if FileType not in ["nrrd", "nii.gz", "nii"]:
-            raise ValueError("FileType must be 'nrrd', 'nii.gz', or 'nii'.")
-        if not os.path.isdir(SaveDirectory):
-            raise ValueError("SaveDirectory must be a valid directory.")
-        if ExtraSaveInfo is not None:
-            check_type(ExtraSaveInfo, str, 'ExtraSaveInfo')
-        try:
-            if referenceVolumeNode is None:
-                if self.associatedVolume is None:
-                    raise ValueError("No associated volume found. Please set an associated volumeNode.")
-                referenceVolumeNode = self.associatedVolume
-            segmentIdToSave = [self.get_id(), ]
-            logger.debug(f"Segment ID to save: {segmentIdToSave}")
-            
-            # Use TempNodeManager to manage the temporary label map volume node
-            with TempNodeManager("vtkMRMLLabelMapVolumeNode", f"{SegmentationNode.GetName()}_label_map_node") as label_map_volume_node:
-                # Export the segments to the label map volume node
-                logger.debug("Exporting the segments to the label map volume node.")
-                slicer.vtkSlicerSegmentationsModuleLogic.ExportSegmentsToLabelmapNode(SegmentationNode, segmentIdToSave, label_map_volume_node, referenceVolumeNode)
-                
-                # Save the label map volume node to a file
-                logger.debug("Saving the label map volume node to a file.")
-                if ExtraSaveInfo is None:
-                    slicer.util.saveNode(label_map_volume_node, os.path.join(SaveDirectory, f"{label_map_volume_node.GetName().split('_label_map_node')[0]}.{FileType}"))
-                else:
-                    slicer.util.saveNode(label_map_volume_node, os.path.join(SaveDirectory, f"{ExtraSaveInfo}_{label_map_volume_node.GetName().split('_label_map_node')[0]}.{FileType}"))
-            
-            return True
-        except Exception as e:
-            log_and_raise(logger, "An error occurred in saveSegmentToFiles", type(e))
 

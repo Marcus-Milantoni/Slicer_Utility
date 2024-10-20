@@ -4,9 +4,7 @@ import slicer
 from DICOMLib import DICOMUtils
 import logging
 import os
-import numpy as np
 import ScreenCapture
-import matplotlib.pyplot as plt
 
 # Setup the logger
 logger = logging.getLogger(__name__)

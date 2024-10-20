@@ -45,7 +45,7 @@ class SegmentationNode:
         Get a segment by its name.
     edit_name(newName : str) -> None
         Edit the name of the segmentation node.
-    _add_segment(segmentObject: slicer.vtkMRMLSegment, segmentName: str = None) -> None
+    _add_segment(segmentObject, segmentName: str = None) -> None
         Add a segment to the segmentation node.
     remove_segment(segment: Segment) -> None
         Remove a segment from the segmentation node.    
@@ -153,18 +153,17 @@ class SegmentationNode:
         self.segmentationNode.SetName(newName)
 
 
-    def _add_segment(self, segmentObject: slicer.vtkMRMLSegment, segmentName: str = None) -> None:
+    def _add_segment(self, segmentObject, segmentName: str = None) -> None:
         """
         Add a segment to the segmentation node.
         
         Parameters
         ----------
-        segmentObject : slicer.vtkMRMLSegment
+        segmentObject :
             The segment object to add.
         segmentName : str, optional
             The name of the segment. Default is None.
             """
-        check_type(segmentObject, slicer.vtkMRMLSegment, 'segmentObject')
         try:
             if segmentName == None:
                 segment_object = Segment(self.segmentationNode, segmentObject) 
