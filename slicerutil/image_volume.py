@@ -1,12 +1,11 @@
 import slicer
 import numpy as np
 from typing import Union
-from utils import check_type, log_and_raise, PresetColormaps, PetColormaps
+from .utils import check_type, log_and_raise, PresetColormaps, PetColormaps
 import logging
 import os
 import matplotlib.pyplot as plt
 
-logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 
@@ -354,4 +353,47 @@ class ImageVolume:
             slicer.util.saveNode(self.volumeNode, os.path.join(outputDir, f"{self.name}.{fileType}"))
         else:
             slicer.util.saveNode(self.volumeNode, os.path.join(outputDir, f"{additionalSaveInfo}.{fileType}"))
+
+def create_volume_node(volumeArray, referenceNode, volumeName) -> ImageVolume:
+    """
+    This function creates a volume node from a numpy array. A reference node must be provided to create the volume node.
+
+    Parameters
+    ----------
+    volumeArray : numpy.ndarray
+                The numpy array to create the volume node from.
+    referenceNode : vtkMRMLScalarVolumeNode
+                The reference node to create the volume node from.
+    volumeName : str
+                The name of the volume node to create.
+    
+    Returns
+    -------
+    vtkMRMLScalarVolumeNode
+        The volume node created from the numpy array.
+
+    Raises
+    ------
+    TypeError
+        If the volumeArray is not a numpy array.
+        If the referenceNode is not a vtkMRMLScalarVolumeNode.
+        If the volumeName is not a string.
+    """
+    check_type(volumeArray, np.ndarray, 'volumeArray')
+    check_type(referenceNode, slicer.vtkMRMLScalarVolumeNode, 'referenceNode')
+    check_type(volumeName, str, 'volumeName')
+    try:
+        logger.info(f"Creating a new volume node.")
+        volumeNode = slicer.mrmlScene.AddNewNodeByClass('vtkMRMLScalarVolumeNode', volumeName)
+        volumeNode.CopyOrientation(referenceNode)
+        volumeNode.SetSpacing(referenceNode.GetSpacing())
+        volumeNode.CreateDefaultDisplayNodes()
+        displayNode = volumeNode.GetDisplayNode()
+        displayNode.SetAndObserveColorNodeID('vtkMRMLColorTableNodeRainbow')
+        slicer.util.updateVolumeFromArray(volumeNode, volumeArray)
+        image_volume_instance = ImageVolume(volumeNode)
+        return image_volume_instance
+    except Exception as e:
+        log_and_raise(logger, "An error occurred in create_volume_node", type(e))
+
 

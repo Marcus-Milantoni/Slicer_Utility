@@ -1,14 +1,11 @@
 import slicer
 import numpy as np
-from segmentation_node import SegmentationNode
-from utils import log_and_raise, check_type, TempNodeManager
+from .segmentation_node import SegmentationNode
+from .utils import log_and_raise, check_type, TempNodeManager
 import logging
 import os
 
-
-logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
-
 
 class Segment:
     """
@@ -16,10 +13,10 @@ class Segment:
     
     Attributes
     ----------
-    segmentationNode : SegmentationNode
-        The segmentation node to which the segment belongs.
     segmentObject : slicer.vtkMRMLSegment
         The segment object in Slicer.
+    segmentationNode : slicer.vtkMRMLSegmentationNode
+        The associated segmentation node in Slicer.
     name : str
         The name of the segment.
     NumPyArray : np.ndarray
@@ -87,9 +84,9 @@ class Segment:
         Save the segment to a file in the specified directory.
         """
     
-    def __init__(self, SegmentationNode: SegmentationNode, segmentObject, segmentName: str = None):
-        self.segmentationNode = SegmentationNode
+    def __init__(self, segmentObject, segmentationNode: slicer.vtkMRMLSegmentationNode, segmentName: str = None):
         self.segmentObject = segmentObject
+        self.segmentationNode = segmentationNode
         if segmentName == None:
             self.name = self.segmentObject.GetName()
         else:
@@ -108,7 +105,7 @@ class Segment:
         """
         Get the description of the segment.
         """
-        return f"Segment {self.name} with ID {self.segmentID} in segmentation {self.segmentationNode.name}"
+        return f"Segment {self.name} with ID {self.segmentID}. Associated volume: {self.associatedVolume.GetName() if self.associatedVolume else None}."
     
 
     def get_name(self) -> str:
@@ -131,13 +128,6 @@ class Segment:
         """
         self.segmentObject.SetName(newName)
         self.name = newName
-
-
-    def delete(self) -> None:
-        """
-        Delete the segment.
-        """
-        self.segmentationNode.remove_segment(self)
 
 
     def delete_array(self) -> None:
@@ -251,23 +241,6 @@ class Segment:
             slicer.util.updateSegmentBinaryLabelmapFromArray(self.NumPyArray, self.segmentObject, self.get_id(), self.associatedVolume)
         except Exception as e:
             log_and_raise(logger, "An error occurred in updateSlicer", type(e))
-
-
-    def copy(self, newName: str):
-        """
-        Copy the segment.
-        
-        Parameters
-        ----------
-        newName : str
-            The name of the new segment.
-            
-        Returns
-        -------
-        Segment
-            The new segment.
-        """
-        return self.segmentationNode.copy_segment(self.name, newName)
         
     
     def dice_similarity(self, segmentationArray: np.ndarray) -> float:

@@ -2,12 +2,11 @@ import slicer, vtk
 import numpy as np
 import os
 import logging
-from segment import Segment
-from utils import check_type, log_and_raise, TempNodeManager
+from .segment import Segment
+from .utils import check_type, log_and_raise, TempNodeManager
 
 
-# Setup the logger (can customize)
-logging.basicConfig(level=logging.DEBUG)
+# Setup the logger
 logger = logging.getLogger(__name__)
 
 
@@ -80,7 +79,7 @@ class SegmentationNode:
         # Initialize the segmentation Node with all created segments
         for i in range(self._segmentation.GetNumberOfSegments()):
             segmentObject = self._segmentation.GetNthSegment(i)
-            self.segments.append(Segment(self, segmentObject))
+            self.segments.append(Segment(self.segmentationNode, segmentObject))
 
 
     def __str__(self):
@@ -168,18 +167,18 @@ class SegmentationNode:
         check_type(segmentObject, slicer.vtkMRMLSegment, 'segmentObject')
         try:
             if segmentName == None:
-                segment_object = Segment(self, segmentObject) 
+                segment_object = Segment(self.segmentationNode, segmentObject) 
                 self.segments.append(segment_object)
                 return segment_object
             else:
-                segment_object = Segment(self, segmentObject, segmentName)
+                segment_object = Segment(self.segmentationNode, segmentObject, segmentName)
                 self.segments.append(segment_object)
                 return segment_object
         except Exception as e:
             log_and_raise(logger, "An error occurred in _add_segment", type(e))
 
 
-    def remove_segment(self, segment: Segment) -> None:
+    def delete_segment(self, segment: Segment) -> None:
         """
         Remove a segment from the segmentation node.
         
@@ -194,7 +193,7 @@ class SegmentationNode:
         del segment
 
 
-    def remove_segment_by_name(self, segmentName: str) -> None:
+    def delete_segment_by_name(self, segmentName: str) -> None:
         """
         Remove a segment by its name.
 

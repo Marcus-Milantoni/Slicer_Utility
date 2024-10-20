@@ -1,15 +1,14 @@
 from setuptools import find_packages, setup
 
-VERSION = "0.1.2"
+VERSION = "0.1.4"
 with open(r"README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
     name="slicerutil",
-    version=VERSION,
+    version="0.1.4",
     description="A package created for ease of use working with NumPy in 3D Slicer",
-    package_dir={"": "slicerutil"},
-    packages = find_packages("slicerutil"),
+    packages = find_packages(),
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/Marcus-Milantoni/Slicer_Utility",
